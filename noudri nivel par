@@ -1,0 +1,8 @@
+(DEFUN noduriPare(arb nivel)
+(COND
+((and (atom arb) (= (mod nivel 2) 0)) 1)
+((atom arb) 0)
+(T (apply '+ ( mapcar #' ( lambda ( a ) ( noduriPare a (+ 1 nivel ) ) ) arb )))
+)
+) 
+(DEFUN noduri (arb) (noduriPare arb 0))

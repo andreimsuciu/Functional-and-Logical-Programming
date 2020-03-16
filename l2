@@ -1,0 +1,28 @@
+;Lisp lab2-p2
+;Mathematica Model
+;rightPath(l,c)={l,l1 not number and c=0
+;               {rightPath(l2..ln)(c-1), l1 not number
+;               {rightPath(l2..ln)(c+l1), otherwise
+(defun rightPath (L C)
+(cond 
+((and (not(numberp (car L))) (= C 0)) L)
+((not (numberp(car L))) (rightPath (cdr L) (- C 1)))  
+(T (rightPath (cdr L) (+ C (car L))))
+)
+)
+
+;kthLvlNodes(l,n,k)={l1 U R, n=k
+;                   {NIL,l2=0 and n is not k
+;                   {kthLvlNodes(l3..ln,n+1,k),l2=1 and n is not k
+;                   {kthLvlNodes(l3..ln,n+1,k) U kthLvlNodes(rightPath(l3..ln,1),n+1,k),otherwise
+(defun kthLvlNodes (tree N K)
+(cond
+((= N K) (list (car tree)))
+((and (= (cadr tree) 0) (not(= N K))) nil)
+((and (= (cadr tree) 1) (not(= N K))) (kthLvlNodes (cddr tree) (+ N 1) K))
+(T (append (kthLvlNodes (cddr tree) (+ N 1) K) (kthLvlNodes (rightPath (cddr tree) 1) (+ N 1) K)))
+)
+)
+;w_kthLvlNodes `(A 2 B 2 F 2 G 0 H 0 I 1 J 0 C 2 D 1 E 0 K 0) 3
+
+(defun w_kthLvlNodes (tree K) (kthLvlNodes tree 1 K))

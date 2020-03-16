@@ -1,0 +1,64 @@
+;a) Write a function to return the n-th element of a list, or NIL if such an element does not exist
+;Mathematical model:
+;findNthElem(L, N)= NIL, L vida
+;		    l1, N=1
+;		    findNthElem(l2..ln,N-1), otherwise
+
+(defun findNthElem (l n)
+	(cond
+		((null l) nil)
+		((= n 1)(car l))
+		(t(findNthElem(cdr l)(- n 1))))) 
+
+; findNthElem `(20 32 38 14 27 38) 4->14
+; findNthElem `(1 2 3 4) 5 -> NIL
+
+;b) Write a function to check whether an atom E is a member of a list which is not necessarily linear
+;Mathematical model:
+;isMember(L, E)=NIL, L vida
+;		TRUE, l1=E
+;		isMember(l1, e), l1 is LIST
+;		isMember(l2..ln, e), otherwise
+
+(defun isMember (l e)
+	(cond
+		((null l) nil)
+		((equal(car l) e)t)
+		((listp (car l))(isMember(car l) e))
+		(t (isMember(cdr l)e))))
+
+;(isMember `(1 2 3) 3)->T
+;(isMember `(1 2 3) 4)->NIL
+;(isMember `(1 2 (3 4) 2) 4)->T
+
+;c) Write a function to determine the list of all sublists of a given list, on any level.A sublist is either the list itself, or any element that is a list, at any level.
+;Mathematical model:
+;genSublists(L)=NIL, L vida
+;		l1 U (genSublists(l1) U genSublists(l2..ln), l1 is LIST
+;		genSublists(l2..ln),otherwise	
+
+(defun genSublists(l)
+	(cond
+		((null l) nil)
+		((listp (car l))(cons(car l)(append(genSublists(car l))(genSublists(cdr l)))))
+		(t (genSublists(cdr l)))))
+
+(defun w_genSublists(l)
+	(cons l (genSublists l)))
+
+;(w_genSublists `(1 2 (3 (4 5) (6 7)) 8 (9 10)))-> ((findNthElem `(20 32 38 14 27 38)1 2 (3 (4 5) (6 7)) 8 (9 10))(3 (4 5) (6 7))(4 5)(6 7)(9 10) ) 	
+
+;d) Write a function to transform a linear list into a set.
+;Mathematica model:
+;listToSet(L)=	NIL,L VIDA
+;		listToSet(l2..ln), isMember(l2..ln,l1)
+;		l1 U listToSet(l2..ln),otherwise
+
+(defun listToSet(l)
+	(cond
+		((null l) nil)
+		((isMember(cdr l) (car l))(listToSet (cdr l)))
+		(t (cons(car l)(listToSet(cdr l))))))
+
+;(listToSet `(1 1 2 2 3 4 8 3 4 1 9 2 0 3 9))->(8 4 1 2 0 3 9)
+	

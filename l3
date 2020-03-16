@@ -1,0 +1,13 @@
+;lisp3 - p10
+;Mathematical model:
+;replaceNode(tree A B)= {B, atom(tree) and A is Tree
+;			{Tree, atom(tree) and A is not Tree
+;			{replaceNode(t1) U replaceNode(t2) U ... U replaceNode(tn),otherwise
+ 
+(defun replaceNode (tree A B)
+(cond
+((and (atom tree) (equal A tree)) B)
+((and (atom tree) (not (equal A tree))) tree)
+(T (mapcar #'(lambda (tree) (replaceNode tree A B)) tree))
+)
+)

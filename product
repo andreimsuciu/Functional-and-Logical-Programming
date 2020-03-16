@@ -1,0 +1,7 @@
+(DEFUN product (x) 
+(COND         
+((numberp x) x)         
+((atom x) 1)         
+(t (apply ' * (mapcar  ' product x))) 
+) 
+) 
